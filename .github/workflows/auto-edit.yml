@@ -16,7 +16,7 @@ jobs:
       - name: Overwrite data.txt with Testing + random number
         run: |
           RANDOM_NUM=$((10000 + RANDOM % 90000))  # Ensures 5-digit number
-          echo "Testing$RANDOM_NUM" > data.txt
+          echo "Lustra$RANDOM_NUM" > data.txt
 
       - name: Commit and push changes
         run: |
