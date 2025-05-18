@@ -1,1 +1,26 @@
 
+name: Auto Edit Text
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # Runs every 4 hours
+  workflow_dispatch:        # Lets you run it manually from the Actions tab
+
+jobs:
+  auto-edit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Modify data.txt
+        run: |
+          echo "Updated at $(date --utc)" >> data.txt
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.txt
+          git diff --quiet || git commit -m "Auto update at $(date)"
+          git push
