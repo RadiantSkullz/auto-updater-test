@@ -1,26 +1,29 @@
-
 name: Auto Edit Text
 
 on:
   schedule:
-    - cron: '0 */4 * * *'  # Runs every 4 hours
-  workflow_dispatch:        # Lets you run it manually from the Actions tab
+    - cron: '0 */1 * * *'  # Every 1 hours
+  workflow_dispatch:
 
 jobs:
   auto-edit:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Modify data.txt
+      - name: Overwrite data.txt with Testing + random number
         run: |
-          echo "Updated at $(date --utc)" >> data.txt
+          RANDOM_NUM=$((10000 + RANDOM % 90000))  # Ensures 5-digit number
+          echo "Testing$RANDOM_NUM" > data.txt
 
       - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data.txt
-          git diff --quiet || git commit -m "Auto update at $(date)"
+          git commit -m "Auto update with Testing$RANDOM_NUM" || echo "No changes to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
