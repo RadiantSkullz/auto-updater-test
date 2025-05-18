@@ -2,7 +2,7 @@ name: Auto Edit Text
 
 on:
   schedule:
-    - cron: '0 */1 * * *'  # Every 1 hours
+- cron: '* * * * *'  # Every minute
   workflow_dispatch:
 
 jobs:
